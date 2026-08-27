@@ -593,7 +593,7 @@
         // Cálculo de vSAN
         // VVF: 0.25 TiB por core licenciado -> GiB a TiB (1 TiB = 1024 GiB)
         const vsanVvfGiB = totalLicensedCores * 0.25;
-        const vsanVvfTiB = (vsanVvfGiB / 1024).toFixed(1);
+        //const vsanVvfTiB = (vsanVvfGiB / 1024).toFixed(1);
 
         // VCF: 1 TiB por core licenciado
         const vsanVcfTiB = totalLicensedCores;
