@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centro de Referencia Técnica | VMware Cloud & Datacenter</title>
+  <title>VMware Cloud Foundation 9.1 | Centro de Referencia Técnica</title>
   <style>
     :root {
       --primary-color: #0072ce; /* Azul VMware */
-      --secondary-color: #002f6c;
-      --accent-color: #10b981;
-      --bg-color: #f1f5f9;
+      --secondary-color: #0f172a; /* Slate Oscuro */
+      --accent-color: #2563eb;
+      --bg-color: #f8fafc;
       --card-bg: #ffffff;
-      --text-color: #0f172a;
-      --text-muted: #475569;
-      --border-color: #cbd5e1;
+      --text-color: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
     }
 
     * {
@@ -34,20 +34,32 @@
 
     /* Header */
     header {
-      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      background: linear-gradient(135deg, #0284c7, var(--primary-color));
       color: white;
       padding: 2.5rem 2rem;
       text-align: center;
     }
 
     header h1 {
-      font-size: 2rem;
+      font-size: 2.1rem;
       margin-bottom: 0.5rem;
     }
 
     header p {
       font-size: 1.1rem;
-      opacity: 0.9;
+      opacity: 0.95;
+    }
+
+    .version-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     /* Layout principal */
@@ -73,7 +85,7 @@
     }
 
     nav h3 {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
@@ -120,7 +132,7 @@
 
     .card h2 {
       color: var(--secondary-color);
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 2px solid #f1f5f9;
       padding-bottom: 0.5rem;
       margin-bottom: 1.25rem;
       font-size: 1.4rem;
@@ -131,23 +143,24 @@
       margin: 1.2rem 0 0.5rem 0;
     }
 
-    /* Tablas */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.5rem 0;
+    /* Grid de Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
     }
 
-    th, td {
-      padding: 0.75rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border-color);
+    .feature-item {
+      background: #f8fafc;
+      padding: 1.2rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
     }
 
-    th {
-      background-color: #f8fafc;
+    .feature-item h4 {
       color: var(--secondary-color);
-      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
 
     /* Callout info */
@@ -202,109 +215,91 @@
 <body>
 
   <header>
-    <h1>VMware Architecture & Licensing Reference</h1>
-    <p>Resumen técnico sobre VCF, VVF, licenciamiento por Cores y arquitectura SDDC</p>
+    <h1>VMware Cloud Foundation 9.1</h1>
+    <p>Arquitectura Unificada de Plataforma SDDC y Gestión de Flota</p>
+    <span class="version-tag">Broadcom TechDocs Reference</span>
   </header>
 
   <div class="container">
     <nav>
       <h3>Navegación</h3>
       <ul>
-        <li><a href="#licenciamiento">Modelo de Licenciamiento</a></li>
-        <li><a href="#ofertas">Ofertas Principales (VCF / VVF)</a></li>
-        <li><a href="#arquitectura">Arquitectura y Dominios</a></li>
-        <li><a href="#dimensionamiento">Sizing y Requisitos</a></li>
+        <li><a href="#vision-general">Visión General VCF 9.x</a></li>
+        <li><a href="#novedades-91">Novedades en VCF 9.1</a></li>
+        <li><a href="#arquitectura-sddc">Arquitectura Unificada</a></li>
+        <li><a href="#operaciones-lcm">Gestión de Flota y LCM</a></li>
       </ul>
     </nav>
 
     <main>
-      <!-- SECCIÓN 1: LICENCIAMIENTO -->
-      <section id="licenciamiento" class="card">
-        <h2>Modelo de Licenciamiento</h2>
-        <p>El modelo comercial de VMware se basa exclusivamente en <strong>suscripciones por Core (CPU)</strong>. Las licencias perpetuas ya no están disponibles para nuevas compras o renovaciones.</p>
+      <!-- SECCIÓN 1: VISIÓN GENERAL -->
+      <section id="vision-general" class="card">
+        <h2>Visión General de VCF 9.x</h2>
+        <p>A partir de la versión 9.0, VMware Cloud Foundation consolida la pila SDDC (cómputo, almacenamiento vSAN, red NSX y operaciones Aria) en una **experiencia de plataforma unificada** que simplifica el despliegue y elimina el aislamiento entre componentes.</p>
         
         <div class="callout">
-          <div class="callout-title">Regla Mínima por Procesador</div>
-          <p>Cada CPU física requiere un mínimo de <strong>16 licencias de Core</strong>. Si un procesador tiene menos de 16 cores (ej. 8 o 12), de todas formas se deberán cotizar 16 cores por socket.</p>
+          <div class="callout-title">Consola de Gestión Unificada</div>
+          <p>VCF 9 integra el control del centro de datos bajo una interfaz consolidada donde SDDC Manager asume un rol central para la administración global de infraestructura y operaciones multiclúster.</p>
         </div>
-
-        <h3>Puntos clave de cálculo:</h3>
-        <ul>
-          <li><strong>Cálculo:</strong> Total de sockets × Cores por socket (respetando el mínimo de 16 cores por socket).</li>
-          <li><strong>Métricas de almacenamiento:</strong> Para entornos vSAN dentro de VCF o VVF, el almacenamiento se calcula basándose en TiB asignados por Core suscrito.</li>
-        </ul>
       </section>
 
-      <!-- SECCIÓN 2: OFERTAS PRINCIPALES -->
-      <section id="ofertas" class="card">
-        <h2>Comparativa de Ofertas Principales</h2>
-        <p>El portafolio se consolida en dos soluciones principales según las necesidades de la infraestructura:</p>
+      <!-- SECCIÓN 2: NOVEDADES VCF 9.1 -->
+      <section id="novedades-91" class="card">
+        <h2>Novedades Destacadas en VCF 9.1</h2>
+        <p>VCF 9.1 extiende las capacidades de la plataforma enfocándose en la densidad de hardware, soporte a cargas de trabajo modernas e integración de seguridad:</p>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Característica</th>
-              <th>vSphere Foundation (VVF)</th>
-              <th>Cloud Foundation (VCF)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Enfoque</strong></td>
-              <td>Virtualización de Cómputo y vSAN básico</td>
-              <td>Full Software-Defined Data Center (SDDC)</td>
-            </tr>
-            <tr>
-              <td><strong>Almacenamiento</strong></td>
-              <td>Incluye vSAN (0,25 TiB por core)</td>
-              <td>Incluye vSAN Enterprise (1 TiB por core)</td>
-            </tr>
-            <tr>
-              <td><strong>Red y Seguridad</strong></td>
-              <td>No disponble</td>
-              <td>NSX / Integrado</td>
-            </tr>
-            <tr>
-              <td><strong>Gestión y Operaciones</strong></td>
-              <td>VCF Operations</td>
-              <td>VCF Operatios completo</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="features-grid">
+          <div class="feature-item">
+            <h4>Infraestructura para IA & Kubernetes</h4>
+            <p>Optimizada para la ejecución nativa de cargas Enterprise AI y orquestación de contenedores Tanzu sobre clústeres unificados.</p>
+          </div>
+          <div class="feature-item">
+            <h4>Tiering de Memoria Avanzado</h4>
+            <p>Soporte para jerarquización de memoria que incrementa la densidad de hardware y reduce el TCO del servidor por workload.</p>
+          </div>
+          <div class="feature-item">
+            <h4>Resiliencia & Cyber Recovery</h4>
+            <p>Mecanismos integrados de recuperación ante ransomware y mayor integración con soluciones de seguridad de endpoint.</p>
+          </div>
+          <div class="feature-item">
+            <h4>Gestión de Almacenamiento vSAN</h4>
+            <p>Mejoras en la asignación por Core y eficiencia de espacio con vSAN Enterprise para entornos de alta escala.</p>
+          </div>
+        </div>
       </section>
 
-      <!-- SECCIÓN 3: ARQUITECTURA -->
-      <section id="arquitectura" class="card">
-        <h2>Arquitectura de VMware Cloud Foundation (VCF)</h2>
-        <p>VCF se despliega bajo el concepto de <strong>Workload Domains (WLD)</strong> para aislar el tráfico de gestión de las cargas de trabajo de producción.</p>
+      <!-- SECCIÓN 3: ARQUITECTURA UNIFICADA -->
+      <section id="arquitectura-sddc" class="card">
+        <h2>Arquitectura Unificada y Workload Domains</h2>
+        <p>VCF 9 mantiene la separación lógica de componentes para garantizar aislamiento y rendimiento empresarial:</p>
 
         <h3>1. Management Domain (Dominio de Gestión)</h3>
-        <p>Infraestructura dedicada a ejecutar la pila de administración del SDDC. Requiere al menos 4 hosts dedicados e incluye:</p>
+        <p>Clúster dedicado a los servicios centrales de control y administración de la infraestructura:</p>
         <ul>
-          <li>vCenter Server</li>
-          <li>SDDC Manager</li>
-          <li>Cluster de NSX Managers</li>
-          <li>Aria Operations / Logs</li>
+          <li><strong>vCenter Server & SDDC Manager:</strong> Control unificado del ciclo de vida.</li>
+          <li><strong>Cluster de NSX Managers:</strong> Plan de control de red y seguridad.</li>
+          <li><strong>Aria Operations / Logs:</strong> Visibilidad operativa e ingesta de eventos de la plataforma.</li>
         </ul>
 
-        <h3>2. VI Workload Domains (Dominios de Carga de Trabajo)</h3>
-        <p>Entornos dedicados exclusivamente a ejecutar las máquinas virtuales o contenedores (Tanzu) de las aplicaciones del cliente. Pueden compartir o tener sus propias instancias de vCenter y NSX.</p>
+        <h3>2. VI Workload Domains (Dominios de Aplicación)</h3>
+        <p>Clústeres aislados para la ejecución de aplicaciones de negocio, bases de datos o plataformas Kubernetes, permitiendo políticas independientes de almacenamiento y red.</p>
       </section>
 
-      <!-- SECCIÓN 4: SIZING -->
-      <section id="dimensionamiento" class="card">
-        <h2>Consideraciones de Dimensionamiento (Sizing)</h2>
+      <!-- SECCIÓN 4: OPERACIONES Y LCM -->
+      <section id="operaciones-lcm" class="card">
+        <h2>Lifecycle Management (LCM) y Gestión de Flota</h2>
+        <p>Uno de los ejes principales de VCF 9.1 es la automatización completa de actualizaciones y parches:</p>
         <ul>
-          <li><strong>Factor de Falla (N+1 / N+2):</strong> Siempre considerar la pérdida de uno o dos nodos dentro del clúster al calcular memoria y vCPU.</li>
-          <li><strong>vSAN Capacity:</strong> Mantener un slack space recomendable (mínimo 10-20%) para operaciones de reconstrucción y balanceo automático.</li>
-          <li><strong>Core-to-vCPU Ratio:</strong> Diseñar considerando un overcommit razonable de vCPU:pCore según la naturaleza de la carga de trabajo (ej. 3:1 o 4:1 para cargas generales).</li>
+          <li><strong>Parcheo Automatizado:</strong> Flujos de actualización orquestados de vSphere, NSX y vSAN sin interrupción del servicio.</li>
+          <li><strong>Estandarización de Imágenes:</strong> Uso de imágenes base vLCM para mantener la consistencia del firmware y controladores en toda la flota.</li>
+          <li><strong>Integración Nube Híbrida:</strong> Operaciones consistentes entre centros de datos locales y desplegados en nube.</li>
         </ul>
       </section>
     </main>
   </div>
 
   <footer>
-    <p>&copy; 2026 Guía Técnica de VMware - Desplegado en GitHub Pages</p>
+    <p>&copy; 2026 Guía Técnica de VMware Cloud Foundation 9.1 - Documentación Broadcom TechDocs</p>
   </footer>
 
 </body>
