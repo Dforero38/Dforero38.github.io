@@ -145,6 +145,83 @@
       margin: 1.2rem 0 0.5rem 0;
     }
 
+    /* Estilos de la Calculadora de Licenciamiento */
+    .calculator-container {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--secondary-color);
+    }
+
+    .form-group input {
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 114, 206, 0.15);
+    }
+
+    .calc-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      background: #ffffff;
+      padding: 1.2rem;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .res-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .res-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .res-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .res-subtext {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
     /* Tablas */
     .table-responsive {
       overflow-x: auto;
@@ -269,7 +346,7 @@
 
   <header>
     <h1>VMware Cloud & Datacenter Solutions</h1>
-    <p>Licenciamiento por Cores, Arquitectura, Sizing y Matriz Comparativa (VCF vs VVF)</p>
+    <p>Licenciamiento por Cores, Arquitectura, Sizing y Calculadora de Suscripciones (VCF vs VVF)</p>
     <span class="version-tag">Broadcom Reference Architecture</span>
   </header>
 
@@ -278,6 +355,7 @@
       <h3>Navegación</h3>
       <ul>
         <li><a href="#licenciamiento">Modelo de Licenciamiento</a></li>
+        <li><a href="#calculadora">Calculadora Interactiva</a></li>
         <li><a href="#ofertas">Tipos de Licenciamiento</a></li>
         <li><a href="#comparativa">Matriz Comparativa</a></li>
         <li><a href="#arquitectura">Arquitectura VCF/VVF</a></li>
@@ -298,10 +376,62 @@
         </div>
 
         <h3>Fórmula básica de cálculo:</h3>
-        <p><code>Cores a licenciar = Máx(Cores Físicos por CPU, 16) × Cantidad de Sockets Físicos</code></p>
+        <p><code>Cores por Servidor = Sockets × Máx(Cores Físicos por Socket, 16)</code></p>
+        <p><code>Cores Totales a Licenciar = Servidores × Cores por Servidor</code></p>
       </section>
 
-      <!-- SECCIÓN 2: TIPOS DE LICENCIAMIENTO -->
+      <!-- SECCIÓN 2: CALCULADORA INTERACTIVA -->
+      <section id="calculadora" class="card">
+        <h2>Calculadora de Licenciamiento por Cores</h2>
+        <p>Ingresa la topología de hardware de tu infraestructura para obtener la cantidad exacta de cores a licenciar y el almacenamiento vSAN asignado según el esquema VCF o VVF.</p>
+
+        <div class="calculator-container">
+          <div class="calc-grid">
+            <div class="form-group">
+              <label for="num-servers">Cantidad de Servidores (Hosts):</label>
+              <input type="number" id="num-servers" value="4" min="1" step="1">
+            </div>
+
+            <div class="form-group">
+              <label for="num-sockets">Sockets por Servidor:</label>
+              <input type="number" id="num-sockets" value="2" min="1" step="1">
+            </div>
+
+            <div class="form-group">
+              <label for="num-cores">Cores por Socket:</label>
+              <input type="number" id="num-cores" value="12" min="1" step="1">
+            </div>
+          </div>
+
+          <div class="calc-results">
+            <div class="res-box">
+              <span class="res-label">Cores Físicos Totales</span>
+              <span class="res-value" id="res-physical-cores">96</span>
+              <span class="res-subtext">Cores reales en hardware</span>
+            </div>
+
+            <div class="res-box">
+              <span class="res-label">Cores a Licenciar</span>
+              <span class="res-value" id="res-licensed-cores" style="color: #0284c7;">128</span>
+              <span class="res-subtext" id="res-rule-note">Aplica regla min. 16 cores/socket</span>
+            </div>
+
+            <div class="res-box">
+              <span class="res-label">Almacenamiento vSAN (VVF)</span>
+              <span class="res-value" id="res-vsan-vvf" style="color: #0d9488;">12.5 TiB</span>
+              <span class="res-subtext">Incluido (100 GiB / core)</span>
+            </div>
+
+            <div class="res-box">
+              <span class="res-label">Almacenamiento vSAN (VCF)</span>
+              <span class="res-value" id="res-vsan-vcf" style="color: #2563eb;">128 TiB</span>
+              <span class="res-subtext">Incluido Enterprise (1 TiB / core)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 3: TIPOS DE LICENCIAMIENTO -->
       <section id="ofertas" class="card">
         <h2>Los 2 Tipos Principales de Licenciamiento</h2>
         <p>Broadcom consolida la oferta de virtualización de centros de datos en dos soluciones integradas principales:</p>
@@ -334,7 +464,7 @@
         </div>
       </section>
 
-      <!-- SECCIÓN 3: MATRIZ COMPARATIVA -->
+      <!-- SECCIÓN 4: MATRIZ COMPARATIVA -->
       <section id="comparativa" class="card">
         <h2>Matriz Comparativa de Funcionalidades</h2>
         <p>Resumen funcional acorde a las guías de comparación de ediciones de VMware:</p>
@@ -389,7 +519,7 @@
         </div>
       </section>
 
-      <!-- SECCIÓN 4: ARQUITECTURA -->
+      <!-- SECCIÓN 5: ARQUITECTURA -->
       <section id="arquitectura" class="card">
         <h2>Arquitectura de Despliegue</h2>
         <p>VCF organiza la infraestructura mediante la separación clara de planos de control y cargas de negocio:</p>
@@ -401,7 +531,7 @@
         <p>Clústeres secundarios dedicados a alojar las aplicaciones finales de negocio, aislados operacionalmente del dominio de gestión.</p>
       </section>
 
-      <!-- SECCIÓN 5: SIZING Y REQUISITOS -->
+      <!-- SECCIÓN 6: SIZING Y REQUISITOS -->
       <section id="sizing-requisitos" class="card">
         <h2>Sizing y Requisitos Mínimos</h2>
 
@@ -434,5 +564,62 @@
     <p>&copy; 2026 Referencia Técnica VMware VCF / VVF - Alojado en GitHub Pages</p>
   </footer>
 
+  <!-- SCRIPT INTERACTIVO CALCULADORA DE LICENCIAMIENTO -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputServers = document.getElementById('num-servers');
+      const inputSockets = document.getElementById('num-sockets');
+      const inputCores = document.getElementById('num-cores');
+
+      const resPhysicalCores = document.getElementById('res-physical-cores');
+      const resLicensedCores = document.getElementById('res-licensed-cores');
+      const resRuleNote = document.getElementById('res-rule-note');
+      const resVsanVvf = document.getElementById('res-vsan-vvf');
+      const resVsanVcf = document.getElementById('res-vsan-vcf');
+
+      function calculateLicensing() {
+        const servers = Math.max(1, parseInt(inputServers.value) || 0);
+        const sockets = Math.max(1, parseInt(inputSockets.value) || 0);
+        const coresPerSocket = Math.max(1, parseInt(inputCores.value) || 0);
+
+        // Cores físicos reales
+        const totalPhysicalCores = servers * sockets * coresPerSocket;
+
+        // Regla de mínimo 16 cores por socket
+        const effectiveCoresPerSocket = Math.max(16, coresPerSocket);
+        const totalLicensedCores = servers * sockets * effectiveCoresPerSocket;
+
+        // Cálculo de vSAN
+        // VVF: 100 GiB por core licenciado -> GiB a TiB (1 TiB = 1024 GiB)
+        const vsanVvfGiB = totalLicensedCores * 100;
+        const vsanVvfTiB = (vsanVvfGiB / 1024).toFixed(1);
+
+        // VCF: 1 TiB por core licenciado
+        const vsanVcfTiB = totalLicensedCores;
+
+        // Actualización en DOM
+        resPhysicalCores.textContent = totalPhysicalCores.toLocaleString();
+        resLicensedCores.textContent = totalLicensedCores.toLocaleString();
+        
+        if (coresPerSocket < 16) {
+          resRuleNote.textContent = `Aplica regla mín. 16 cores/socket (ajustado de ${coresPerSocket} a 16)`;
+          resRuleNote.style.color = '#eab308';
+        } else {
+          resRuleNote.textContent = 'Cumple con el mínimo de 16 cores por socket';
+          resRuleNote.style.color = 'var(--text-muted)';
+        }
+
+        resVsanVvf.textContent = `${vsanVvfTiB} TiB`;
+        resVsanVcf.textContent = `${totalLicensedCores.toLocaleString()} TiB`;
+      }
+
+      inputServers.addEventListener('input', calculateLicensing);
+      inputSockets.addEventListener('input', calculateLicensing);
+      inputCores.addEventListener('input', calculateLicensing);
+
+      // Ejecución inicial
+      calculateLicensing();
+    });
+  </script>
 </body>
 </html>
