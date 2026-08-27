@@ -589,6 +589,8 @@
       // Regla de mínimo 16 cores por socket
       const effectiveCoresPerSocket = Math.max(16, coresPerSocket);
       const totalLicensedCores = servers * sockets * effectiveCoresPerSocket;
+      // Mínimo comercial de venta: 72 cores
+      const coresForSale = Math.max(72, totalLicensedCores);
 
       // ==========================================
       // CÁLCULO DE vSAN VVF
@@ -608,6 +610,9 @@
 
       resLicensedCores.textContent =
         totalLicensedCores.toLocaleString();
+      
+      resLicensedCores.textContent = 
+        coresForSale.toLocaleString();
 
       if (coresPerSocket < 16) {
         resRuleNote.textContent =
