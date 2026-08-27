@@ -566,61 +566,77 @@
   </footer>
 
   <!-- SCRIPT INTERACTIVO CALCULADORA DE LICENCIAMIENTO -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const inputServers = document.getElementById('num-servers');
-      const inputSockets = document.getElementById('num-sockets');
-      const inputCores = document.getElementById('num-cores');
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputServers = document.getElementById('num-servers');
+    const inputSockets = document.getElementById('num-sockets');
+    const inputCores = document.getElementById('num-cores');
 
-      const resPhysicalCores = document.getElementById('res-physical-cores');
-      const resLicensedCores = document.getElementById('res-licensed-cores');
-      const resRuleNote = document.getElementById('res-rule-note');
-      const resVsanVvf = document.getElementById('res-vsan-vvf');
-      const resVsanVcf = document.getElementById('res-vsan-vcf');
+    const resPhysicalCores = document.getElementById('res-physical-cores');
+    const resLicensedCores = document.getElementById('res-licensed-cores');
+    const resRuleNote = document.getElementById('res-rule-note');
+    const resVsanVvf = document.getElementById('res-vsan-vvf');
+    const resVsanVcf = document.getElementById('res-vsan-vcf');
 
-      function calculateLicensing() {
-        const servers = Math.max(1, parseInt(inputServers.value) || 0);
-        const sockets = Math.max(1, parseInt(inputSockets.value) || 0);
-        const coresPerSocket = Math.max(1, parseInt(inputCores.value) || 0);
+    function calculateLicensing() {
+      const servers = Math.max(1, parseInt(inputServers.value) || 0);
+      const sockets = Math.max(1, parseInt(inputSockets.value) || 0);
+      const coresPerSocket = Math.max(1, parseInt(inputCores.value) || 0);
 
-        // Cores físicos reales
-        const totalPhysicalCores = servers * sockets * coresPerSocket;
+      // Cores físicos reales
+      const totalPhysicalCores = servers * sockets * coresPerSocket;
 
-        // Regla de mínimo 16 cores por socket
-        const effectiveCoresPerSocket = Math.max(16, coresPerSocket);
-        const totalLicensedCores = servers * sockets * effectiveCoresPerSocket;
+      // Regla de mínimo 16 cores por socket
+      const effectiveCoresPerSocket = Math.max(16, coresPerSocket);
+      const totalLicensedCores = servers * sockets * effectiveCoresPerSocket;
 
-        // Cálculo de vSAN
-        // VVF: 0.25 TiB por core licenciado -> GiB a TiB (1 TiB = 1024 GiB)
-        const vsanVvfGiB = totalLicensedCores * 0.25;
-        //const vsanVvfTiB = (vsanVvfGiB / 1024).toFixed(1);
+      // ==========================================
+      // CÁLCULO DE vSAN VVF
+      // 0.25 TiB por core licenciado
+      // ==========================================
+      const vsanVvfTiB = totalLicensedCores * 0.25;
 
-        // VCF: 1 TiB por core licenciado
-        const vsanVcfTiB = totalLicensedCores;
+      // ==========================================
+      // CÁLCULO DE vSAN VCF
+      // 1 TiB por core licenciado
+      // ==========================================
+      const vsanVcfTiB = totalLicensedCores;
 
-        // Actualización en DOM
-        resPhysicalCores.textContent = totalPhysicalCores.toLocaleString();
-        resLicensedCores.textContent = totalLicensedCores.toLocaleString();
-        
-        if (coresPerSocket < 16) {
-          resRuleNote.textContent = `Aplica regla mín. 16 cores/socket (ajustado de ${coresPerSocket} a 16)`;
-          resRuleNote.style.color = '#eab308';
-        } else {
-          resRuleNote.textContent = 'Cumple con el mínimo de 16 cores por socket';
-          resRuleNote.style.color = 'var(--text-muted)';
-        }
+      // Actualización en DOM
+      resPhysicalCores.textContent =
+        totalPhysicalCores.toLocaleString();
 
-        resVsanVvf.textContent = `${vsanVvfTiB} TiB`;
-        resVsanVcf.textContent = `${totalLicensedCores.toLocaleString()} TiB`;
+      resLicensedCores.textContent =
+        totalLicensedCores.toLocaleString();
+
+      if (coresPerSocket < 16) {
+        resRuleNote.textContent =
+          `Aplica regla mín. 16 cores/socket (ajustado de ${coresPerSocket} a 16)`;
+
+        resRuleNote.style.color = '#eab308';
+      } else {
+        resRuleNote.textContent =
+          'Cumple con el mínimo de 16 cores por socket';
+
+        resRuleNote.style.color = 'var(--text-muted)';
       }
 
-      inputServers.addEventListener('input', calculateLicensing);
-      inputSockets.addEventListener('input', calculateLicensing);
-      inputCores.addEventListener('input', calculateLicensing);
+      // Mostrar VVF
+      resVsanVvf.textContent =
+        `${vsanVvfTiB.toFixed(1)} TiB`;
 
-      // Ejecución inicial
-      calculateLicensing();
-    });
-  </script>
+      // Mostrar VCF
+      resVsanVcf.textContent =
+        `${vsanVcfTiB.toLocaleString()} TiB`;
+    }
+
+    inputServers.addEventListener('input', calculateLicensing);
+    inputSockets.addEventListener('input', calculateLicensing);
+    inputCores.addEventListener('input', calculateLicensing);
+
+    // Ejecución inicial
+    calculateLicensing();
+  });
+</script>
 </body>
 </html>
